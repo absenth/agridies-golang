@@ -1,6 +1,8 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+)
 
 func prepareRoutes(router *gin.Engine) {
 	// Web Resources
@@ -12,15 +14,17 @@ func prepareRoutes(router *gin.Engine) {
 
 	prepareMiddleware(admin, qso)
 
-	admin.GET("/operator", listOperator)
-	admin.POST("/operator", createOperator)
-	admin.PUT("/operator", updateOperator)
+	admin.GET("/operator", getOperators)
+	admin.GET("/operator/:id", getOperator)
+	admin.POST("/operator/", createOperator)
+	admin.PUT("/operator/:id", updateOperator)
 
-	qso.GET("/:id", getQso)
-	qso.POST("/", createQSO)
-	qso.PUT("/:id", updateQSO)
 	qso.GET("/", getQsos)
-	qso.DELETE("/:id", deleteQSO)
+	qso.GET("/:id", getQso)
+	qso.POST("/", createQso)
+	qso.PUT("/:id", updateQso)
+
+	qso.DELETE("/:id", deleteQso)
 }
 
 func main() {
