@@ -1,6 +1,8 @@
 package main
 
 import (
+	"agridies-golang/controller"
+	"agridies-golang/service"
 	"github.com/gin-gonic/gin"
 )
 
@@ -27,7 +29,21 @@ func prepareRoutes(router *gin.Engine) {
 	qso.DELETE("/:id", deleteQso)
 }
 
+var (
+	qsoService    service.QsoService       = service.New()
+	qsoController controller.QsoController = controller.New(qsoService)
+)
+
 func main() {
 	r := prepareRoutes()
+
+	r.GET("/qso", func(ctx *gin.Context) {
+		ctx.JSON(200, qsoController.Findall())
+	})
+
+	r.POST("/qso", func(ctx *gin.Context) {
+		ctx.JSON(201, qsoController.Save(ctx))
+	})
+
 	r.Run(":8080")
 }
